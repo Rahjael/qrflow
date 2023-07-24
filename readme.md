@@ -61,5 +61,5 @@ Closing the program will automatically delete the temporary files created during
 
 
 
-![prev_01](https://github.com/Rahjael/qrflow/blob/main/prev_01.png?raw=true)
-![prev_02](https://github.com/Rahjael/qrflow/blob/main/prev_02.png?raw=true)
+![prev_01](https://github.com/Rahjael/qrflow/blob/main/docs/prev_01.png?raw=true)
+![prev_02](https://github.com/Rahjael/qrflow/blob/main/docs/prev_02.png?raw=true)
