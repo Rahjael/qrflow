@@ -60,7 +60,6 @@ Closing the program will automatically delete the temporary files created during
 # Images
 
 
-(a few screenshots about the program)
 
-
-
+![prev_01](https://github.com/Rahjael/qrflow/blob/main/prev_01.png?raw=true)
+![prev_02](https://github.com/Rahjael/qrflow/blob/main/prev_02.png?raw=true)
