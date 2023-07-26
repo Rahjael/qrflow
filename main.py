@@ -45,7 +45,7 @@ def main():
         [sg.Frame("Codice lavoro:", [[sg.Input(key="-CODE-", enable_events=True, expand_x=True)]], expand_x=True)],
         # [sg.one_line_progress_meter("Completamento...", 0, 3)],
         [sg.Text("Riempire correttamente tutti i campi per generare il qr.", key="-ALERT_FILL_FORM-", text_color="red")],
-        [sg.Button("Applica QRCode", key="-APPLY_BUTTON-", disabled=True), sg.Checkbox("Sovrascrivi", key="-OVERWRITE_CHECKBOX-")]
+        [sg.Button("Applica QRCode", key="-APPLY_BUTTON-", disabled=False), sg.Checkbox("Sovrascrivi", key="-OVERWRITE_CHECKBOX-")]
     ],
     vertical_alignment="top")
 
@@ -82,27 +82,24 @@ def main():
 
 
         # Detect if form is correctly filled
-        if len(values["-CODE-"]) == 8 and values["-DATE-"] and values["-NUM-"] and (values["-DOC-"][0] if len(values["-DOC-"]) > 0 else False):
-            data = {
-                "DOC": values["-DOC-"][0],
-                "NUM": values["-NUM-"],
-                "DATE":values["-DATE-"],
-                "CODE": values["-CODE-"], # TODO allow for more codes
-                "OTHER": ""
-                }
-                        
-            is_valid_form = True
+        # * I think it's better to try and update the qrcode at every event instead of checking for data to be complete
+        # * This is because I want the user to be free to generate the code no matter the info at their disposal
+        # if len(values["-CODE-"]) == 8 and values["-DATE-"] and values["-NUM-"] and (values["-DOC-"][0] if len(values["-DOC-"]) > 0 else False):
 
-            # The qr code is updated at every event
-            generate_qr_code(data, temp_qr_filename, qr_preview_max_width, qr_preview_max_width)
-            window["-QR_THUMBNAIL-"].update(source=temp_qr_filename)
+        # Delete current qrcode if present
+        cleanup_temp_files([temp_qr_filename])
 
-        else:
-            is_valid_form = False
-
-            # Delete current qrcode if present
-            cleanup_temp_files([temp_qr_filename])
-            window["-QR_THUMBNAIL-"].update(source=fill_form_qr_filename)
+        data = {
+            "DOC": values["-DOC-"][0] if len(values["-DOC-"]) > 0 else "",
+            "NUM": values["-NUM-"],
+            "DATE":values["-DATE-"],
+            "CODE": values["-CODE-"] if len(values["-CODE-"]) == 8 else "", # TODO allow for more codes
+            "OTHER": ""
+            }
+                 
+        # The qr code is updated at every event
+        generate_qr_code(data, temp_qr_filename, qr_preview_max_width, qr_preview_max_width)
+        window["-QR_THUMBNAIL-"].update(source=temp_qr_filename)
 
 
 
@@ -119,9 +116,9 @@ def main():
             last_pdf_previewed = values["-FILE-"]
 
 
-
-        window["-APPLY_BUTTON-"].update(disabled=True if is_valid_form == False else False)
-        window["-ALERT_FILL_FORM-"].update(visible=True if is_valid_form == False else False)
+        # ! The form is currently NOT checked. Empty fields are allowed
+        # window["-APPLY_BUTTON-"].update(disabled=True if is_valid_form == False else False)
+        # window["-ALERT_FILL_FORM-"].update(visible=True if is_valid_form == False else False)
 
         window.refresh()
 
