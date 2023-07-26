@@ -62,10 +62,14 @@ def main():
 
 
 
+    # TODO implement regular IP_MANAGER.update()s using:
+    # TODO https://www.pysimplegui.org/en/latest/call%20reference/#window-the-window-object
+    # TODO look for "timer_start" method
+
 
     # Event loop
     while True:
-        event, values = window.read() # ! This is a blocking function. It goes on only when a PySimpleGUI event is triggered
+        event, values = window.read() # ! This is a blocking function. It goes on only when a PySimpleGUI event is triggered, unless a timeout is given
 
         print(f"event: {event}, values: {values}") if devmode else None
 
